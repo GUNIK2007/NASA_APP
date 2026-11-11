@@ -1208,19 +1208,17 @@ input:focus-visible {
   }
 }
 
-@media (max-width: 1100px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .split,
-  .reco-grid {
-    grid-template-columns: 1fr;
-  }
-  .sim-card {
-    position: static;
+/* ----- Responsive : du plus large au plus étroit ----- */
+
+/* Très grands écrans */
+@media (min-width: 1536px) {
+  .wrap {
+    max-width: 1360px;
   }
 }
-@media (max-width: 900px) {
+
+/* Portables : la navigation passe sur une seconde ligne avant de déborder */
+@media (max-width: 1180px) {
   .topbar-in {
     flex-wrap: wrap;
     height: auto;
@@ -1232,9 +1230,51 @@ input:focus-visible {
     flex: 1 0 100%;
     overflow-x: auto;
     padding: 6px 0 8px;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+  .topbar-end {
+    padding-bottom: 10px;
+  }
+  .brand {
+    padding-bottom: 10px;
+  }
+  html {
+    scroll-padding-top: 120px;
   }
 }
-@media (max-width: 640px) {
+
+/* Tablettes et petits portables */
+@media (max-width: 1100px) {
+  .split,
+  .reco-grid {
+    grid-template-columns: 1fr;
+  }
+  .sim-card {
+    position: static;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* Les textes des graphiques gardent une taille lisible quand le SVG se réduit */
+  .plot svg text {
+    font-size: 15px;
+  }
+  .map svg text {
+    font-size: 15px;
+  }
+  .map svg .m-sub {
+    font-size: 13px;
+  }
+  .section-head {
+    justify-content: flex-start;
+  }
+}
+
+/* Grands téléphones, petites tablettes */
+@media (max-width: 760px) {
   .wrap {
     padding: 0 16px;
   }
@@ -1244,14 +1284,8 @@ input:focus-visible {
   .hero {
     padding-top: 20px;
   }
-  .hero h1 {
-    font-size: 25px;
-  }
   .card {
     padding: 18px;
-  }
-  .stats-grid {
-    grid-template-columns: 1fr;
   }
   .card-head {
     flex-direction: column;
@@ -1272,16 +1306,20 @@ input:focus-visible {
   .stats {
     grid-template-columns: 1fr;
   }
-  .conn #net-state {
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .seg {
+    display: flex;
+    width: 100%;
+  }
+  .seg label {
+    flex: 1;
+    text-align: center;
+    padding: 9px 8px;
   }
   .plot svg text {
-    font-size: 20px;
+    font-size: 19px;
   }
   .map svg text {
-    font-size: 17px;
+    font-size: 18px;
   }
   .map svg .m-sub {
     font-size: 15px;
@@ -1295,13 +1333,128 @@ input:focus-visible {
   .alert-action {
     font-size: 18px;
   }
+  .footer {
+    padding-bottom: 96px; /* laisse la place au bouton de l'assistant */
+  }
 }
+
+/* Téléphones */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  /* Sur téléphone, la pastille de connexion ne garde que son point (le texte reste lu par les lecteurs d'écran) */
+  .conn #net-state {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .conn {
+    padding: 11px;
+  }
+  .stat-top {
+    flex-wrap: wrap;
+  }
+  .stat-badge {
+    margin-left: 0;
+  }
+  .chips li {
+    white-space: normal;
+  }
+  .plot svg text {
+    font-size: 25px;
+  }
+  .map svg text {
+    font-size: 21px;
+  }
+  .map svg .m-sub,
+  .map svg .m-cap {
+    display: none;
+  }
+  .map svg .m-lbl {
+    font-size: 20px;
+  }
+  .gl {
+    font-size: 11px;
+  }
+  .tip {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+/* Très petits écrans (320 px) */
+@media (max-width: 360px) {
+  .wrap {
+    padding: 0 12px;
+  }
+  .card,
+  .stat-card {
+    padding: 14px;
+  }
+  .stat-value {
+    font-size: 30px;
+  }
+  .parcel-name {
+    font-size: 19px;
+  }
+  .section-head h2 {
+    font-size: 19px;
+  }
+}
+
+/* Écrans tactiles : cibles plus grandes, le défilement vertical reste possible sur les graphiques */
+@media (pointer: coarse) {
+  .nav a {
+    padding: 11px 14px;
+  }
+  .seg label {
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+  .sim input[type="range"] {
+    height: 8px;
+  }
+  .sim input[type="range"]::-webkit-slider-thumb {
+    width: 26px;
+    height: 26px;
+  }
+  .sim input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+  .sim .chk {
+    padding: 14px;
+  }
+  .plot svg.main {
+    touch-action: pan-y;
+  }
+}
+
+/* Paysage sur téléphone : la barre ne reste pas collée et ne mange pas l'écran */
+@media (max-height: 480px) and (orientation: landscape) {
+  .topbar {
+    position: static;
+  }
+  .sim-card {
+    position: static;
+  }
+}
+
+/* Titres fluides */
+.hero h1 {
+  font-size: clamp(25px, 3.2vw + 12px, 34px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation: none !important;
-    transition: none !important;u
+    transition: none !important;
     scroll-behavior: auto !important;
   }
   .js .reveal {

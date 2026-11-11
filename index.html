@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="chat.css" />
   </head>
   <body>
     <!-- Icônes réutilisées partout via <use href="#i-…"> (aussi par app.js) -->
@@ -39,6 +40,10 @@
         <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" /></symbol>
         <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" /></symbol>
         <symbol id="i-flat" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /><path d="M8 9.5h8M8 12.5h5" /></symbol>
+        <symbol id="i-send" viewBox="0 0 24 24"><path d="M5 12l15-8-5 17-3-7z" /><path d="M12 14l8-10" /></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
+        <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13" /></symbol>
       </defs>
     </svg>
 
@@ -273,6 +278,52 @@
       </div>
     </footer>
 
+    <!-- Assistant IA : interface complète (HTML + chat.css + chat.js). Le backend se branche dans chat.js, fonction appelerBackend(). -->
+    <button id="chat-open" class="chat-fab" type="button" aria-haspopup="dialog" aria-controls="chat-panel">
+      <svg class="ic" aria-hidden="true"><use href="#i-chat" /></svg><span>Poser une question</span>
+    </button>
+
+    <section id="chat-panel" class="chat" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden>
+      <header class="chat-head">
+        <span class="chat-avatar" aria-hidden="true"><svg class="ic"><use href="#i-sprout" /></svg></span>
+        <div class="chat-head-txt">
+          <h2 id="chat-title">Assistant Réact+</h2>
+          <p id="chat-status"><i class="dot" aria-hidden="true"></i><span id="chat-status-txt">Mode démonstration</span></p>
+        </div>
+        <button id="chat-clear" class="chat-icon-btn" type="button" aria-label="Effacer la conversation" title="Effacer la conversation">
+          <svg class="ic"><use href="#i-trash" /></svg>
+        </button>
+        <button id="chat-close" class="chat-icon-btn" type="button" aria-label="Fermer l’assistant" title="Fermer">
+          <svg class="ic"><use href="#i-close" /></svg>
+        </button>
+      </header>
+
+      <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions">
+        <div class="chat-welcome" id="chat-welcome">
+          <p class="chat-welcome-title">Bonjour, comment puis-je vous aider ?</p>
+          <p class="note">Posez une question sur l’irrigation, la chaleur, les cultures ou vos données. L’assistant tient compte de votre parcelle.</p>
+          <div class="chat-suggest" id="chat-suggest">
+            <button type="button" class="chip-btn">Dois-je irriguer demain ?</button>
+            <button type="button" class="chip-btn">Que signifie l’écart entre capteur et satellite ?</button>
+            <button type="button" class="chip-btn">Quelle culture après le riz ?</button>
+            <button type="button" class="chip-btn">Comment protéger le riz de la chaleur ?</button>
+          </div>
+        </div>
+      </div>
+
+      <p id="chat-ctx" class="chat-ctx" title="Contexte envoyé avec votre question"></p>
+
+      <form id="chat-form" class="chat-form" autocomplete="off">
+        <label for="chat-input" class="sr-only">Votre question</label>
+        <textarea id="chat-input" rows="1" maxlength="1000" placeholder="Écrivez votre question…"></textarea>
+        <button id="chat-send" class="chat-send" type="submit" aria-label="Envoyer" disabled>
+          <svg class="ic"><use href="#i-send" /></svg>
+        </button>
+      </form>
+      <p class="chat-foot">Les réponses de l’IA peuvent être inexactes. Vérifiez avant toute décision importante.</p>
+    </section>
+
     <script src="app.js"></script>
+    <script src="chat.js"></script>
   </body>
 </html>
