@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#16834A" />
     <title>Réact+ | Aide à la décision agricole · NASA Space Apps 2026</title>
+    <!-- Thème choisi (ou thème du téléphone) appliqué avant l'affichage, pour éviter un flash blanc -->
+    <script>
+      try {
+        var t = localStorage.getItem("reactplus-theme");
+        if (t !== "dark" && t !== "light") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -41,6 +49,8 @@
         <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" /></symbol>
         <symbol id="i-flat" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
         <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h4l5-4v13l-5-4H4z" /><path d="M16.5 9a4 4 0 0 1 0 6M18.8 6.5a7.5 7.5 0 0 1 0 11" /></symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" /></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z" /></symbol>
         <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /><path d="M8 9.5h8M8 12.5h5" /></symbol>
         <symbol id="i-send" viewBox="0 0 24 24"><path d="M5 12l15-8-5 17-3-7z" /><path d="M12 14l8-10" /></symbol>
         <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
@@ -70,6 +80,9 @@
           <a href="#recommandations">Recommandations</a>
         </nav>
         <div class="topbar-end">
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Passer en mode sombre" title="Mode sombre">
+            <svg class="ic sun" aria-hidden="true"><use href="#i-sun" /></svg><svg class="ic moon" aria-hidden="true"><use href="#i-moon" /></svg>
+          </button>
           <span class="conn" id="net-pill" title="État de la source satellitaire">
             <i class="dot" aria-hidden="true"></i><span id="net-state">Mode démonstration</span>
           </span>

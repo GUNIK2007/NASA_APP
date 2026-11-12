@@ -23,10 +23,65 @@
   --crit-d: #a92a2a;
   --crit-l: #fcecec;
   --sat: #3f6e8c;
+  --g-btn: #16834a; /* fond des boutons verts (texte blanc) */
+  --g-hover: #105c37;
+  --g-l2: #d8eddf;
+  --warn-solid: #8f5504;
+  --crit-solid: #a92a2a;
+  --info-l: #e9f0f5;
+  --info-d: #2b5069;
+  --field: #dff1e5;
+  --map-bg: #f1f6f2;
+  --ctx: #e4ede6;
+  --ctx-line: #d2dfd5;
+  --chip: #f0f3f1;
+  --track: #edf1ee;
+  --track-2: #eef2ef;
+  --nav-bg: var(--nav-bg);
+  --tip-bg: #26352d;
+  --tip-fg: #ffffff;
+  --sh: 38, 53, 45;
+  color-scheme: light;
   --r: 14px;
-  --shadow: 0 1px 2px rgba(38, 53, 45, 0.05), 0 4px 14px rgba(38, 53, 45, 0.04);
-  --shadow-up: 0 2px 4px rgba(38, 53, 45, 0.06), 0 10px 26px rgba(38, 53, 45, 0.08);
+  --shadow: 0 1px 2px rgba(var(--sh), 0.05), 0 4px 14px rgba(var(--sh), 0.04);
+  --shadow-up: 0 2px 4px rgba(var(--sh), 0.06), 0 10px 26px rgba(var(--sh), 0.08);
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ----- Mode sombre : activé par data-theme="dark" sur <html> (voir le script dans <head> et app.js) ----- */
+:root[data-theme="dark"] {
+  --g: #3dba78;
+  --g-d: #8fe0b0;
+  --g-l: #1b3326;
+  --g-l2: #234331;
+  --g-hover: #1d9d5a;
+  --bg: #0e1511;
+  --card: #16201a;
+  --ink: #e8f0ea;
+  --mut: #9aaea1;
+  --line: #26352d;
+  --warn-d: #f2b866;
+  --warn-l: #33260f;
+  --warn-solid: #a35f08;
+  --crit: #e66a6a;
+  --crit-d: #f29a9a;
+  --crit-l: #381b1d;
+  --crit-solid: #b03a3a;
+  --sat: #6aa5c9;
+  --info-l: #1a2a36;
+  --info-d: #9ccbe6;
+  --field: #1f3a2a;
+  --map-bg: #131d17;
+  --ctx: #1b2a21;
+  --ctx-line: #26382d;
+  --chip: #223028;
+  --track: #26352d;
+  --track-2: #1d2a23;
+  --nav-bg: rgba(22, 32, 26, 0.9);
+  --tip-bg: #e8f0ea;
+  --tip-fg: #0e1511;
+  --sh: 0, 0, 0;
+  color-scheme: dark;
 }
 
 *,
@@ -39,6 +94,7 @@ html {
   scroll-padding-top: 84px;
 }
 body {
+  transition: background-color 0.3s, color 0.3s;
   margin: 0;
   background: var(--bg);
   color: var(--ink);
@@ -85,7 +141,7 @@ main.wrap {
   left: 12px;
   top: -60px;
   z-index: 100;
-  background: var(--g-d);
+  background: var(--g-hover);
   color: #fff;
   padding: 8px 14px;
   border-radius: 8px;
@@ -142,7 +198,7 @@ input:focus-visible {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--nav-bg);
   backdrop-filter: saturate(1.4) blur(10px);
 }
 .topbar-in {
@@ -167,7 +223,7 @@ input:focus-visible {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: var(--g);
+  background: var(--g-btn);
   color: #fff;
 }
 .brand-name b {
@@ -247,7 +303,7 @@ input:focus-visible {
   font-size: 13px;
   font-weight: 500;
   color: var(--mut);
-  background: #fff;
+  background: var(--card);
   box-shadow: var(--shadow);
   white-space: nowrap;
 }
@@ -261,6 +317,30 @@ input:focus-visible {
 }
 .conn.live .dot {
   background: var(--g);
+}
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s var(--ease);
+}
+.theme-toggle:hover {
+  background: var(--g-l);
+  color: var(--g-d);
+}
+.theme-toggle .moon,
+:root[data-theme="dark"] .theme-toggle .sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .moon {
+  display: block;
 }
 .avatar {
   display: grid;
@@ -301,7 +381,7 @@ input:focus-visible {
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background: #fff;
+  background: var(--card);
   box-shadow: var(--shadow);
   border-radius: 999px;
   font-size: 13px;
@@ -407,7 +487,7 @@ input:focus-visible {
   margin-left: auto;
   padding: 2px 8px;
   border-radius: 999px;
-  background: #f0f3f1;
+  background: var(--chip);
   color: var(--mut);
   font-size: 11px;
   font-weight: 600;
@@ -543,7 +623,7 @@ input:focus-visible {
   font-family: inherit;
 }
 .m-bg {
-  fill: #f1f6f2;
+  fill: var(--map-bg);
 }
 .m-cell {
   fill: rgba(63, 110, 140, 0.06);
@@ -552,8 +632,8 @@ input:focus-visible {
   stroke-dasharray: 6 5;
 }
 .m-ctx {
-  fill: #e4ede6;
-  stroke: #d2dfd5;
+  fill: var(--ctx);
+  stroke: var(--ctx-line);
 }
 .m-parcel {
   fill: url(#rows);
@@ -562,7 +642,7 @@ input:focus-visible {
   stroke-linejoin: round;
 }
 .m-row-bg {
-  fill: #dff1e5;
+  fill: var(--field);
 }
 .m-row-line {
   stroke: var(--g-s);
@@ -570,7 +650,7 @@ input:focus-visible {
 }
 .m-dot {
   fill: var(--g-d);
-  stroke: #fff;
+  stroke: var(--card);
   stroke-width: 2.5;
 }
 .ping {
@@ -585,7 +665,7 @@ input:focus-visible {
   stroke-width: 1.2;
 }
 .m-tag {
-  fill: #fff;
+  fill: var(--card);
   stroke: var(--line);
 }
 .m-lbl {
@@ -602,7 +682,7 @@ input:focus-visible {
   fill: var(--sat);
 }
 .m-north circle {
-  fill: #fff;
+  fill: var(--card);
   stroke: var(--line);
 }
 .m-north path {
@@ -633,7 +713,7 @@ input:focus-visible {
   border-radius: 3px;
 }
 .sw-parcel {
-  background: #dff1e5;
+  background: var(--field);
   border: 2px solid var(--g);
 }
 .sw-sensor {
@@ -764,14 +844,14 @@ input:focus-visible {
   padding: 10px 16px;
   border: 0;
   border-radius: 10px;
-  background: var(--g);
+  background: var(--g-btn);
   color: #fff;
   font: 600 14px/1.2 "Inter", system-ui, sans-serif;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
 }
 .btn:hover:not(:disabled) {
-  background: var(--g-d);
+  background: var(--g-hover);
 }
 .btn:active:not(:disabled) {
   transform: scale(0.98);
@@ -800,7 +880,7 @@ input:focus-visible {
   display: inline-flex;
   padding: 4px;
   gap: 4px;
-  background: #eef2ef;
+  background: var(--track-2);
   border-radius: 12px;
   margin-bottom: 20px;
   max-width: 100%;
@@ -822,10 +902,10 @@ input:focus-visible {
 #m-hum:checked ~ .seg label[for="m-hum"],
 #m-temp:checked ~ .seg label[for="m-temp"],
 #m-rain:checked ~ .seg label[for="m-rain"] {
-  background: #fff;
+  background: var(--card);
   color: var(--g-d);
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(38, 53, 45, 0.12);
+  box-shadow: 0 1px 3px rgba(var(--sh), 0.12);
 }
 #m-hum:focus-visible ~ .seg label[for="m-hum"],
 #m-temp:focus-visible ~ .seg label[for="m-temp"],
@@ -889,7 +969,7 @@ input:focus-visible {
 .legend .h::before {
   height: 12px;
   border-radius: 3px;
-  background: repeating-linear-gradient(45deg, rgba(63, 110, 140, 0.18) 0 3px, rgba(38, 53, 45, 0.35) 3px 4px);
+  background: repeating-linear-gradient(45deg, rgba(63, 110, 140, 0.18) 0 3px, rgba(0, 0, 0, 0.35) 3px 4px);
 }
 .plot {
   position: relative;
@@ -917,8 +997,8 @@ input:focus-visible {
   top: 8px;
   transform: translateX(-50%);
   padding: 8px 12px;
-  background: var(--ink);
-  color: #fff;
+  background: var(--tip-bg);
+  color: var(--tip-fg);
   border-radius: 8px;
   font-size: 12px;
   line-height: 1.5;
@@ -1002,8 +1082,8 @@ input:focus-visible {
 }
 .simple-row.info {
   --c: var(--sat);
-  --cl: #e9f0f5;
-  --cd: #2b5069;
+  --cl: var(--info-l);
+  --cd: var(--info-d);
 }
 .simple-ic {
   display: grid;
@@ -1044,7 +1124,7 @@ input:focus-visible {
   margin-top: 6px;
   padding: 4px 12px;
   border-radius: 999px;
-  background: #fff;
+  background: var(--card);
   color: var(--cd);
   font-size: 13px;
   font-weight: 700;
@@ -1053,16 +1133,16 @@ input:focus-visible {
   margin-top: 14px;
   padding: 16px 18px;
   border-radius: 14px;
-  background: var(--g);
+  background: var(--g-btn);
   color: #fff;
   font-size: 18px;
   line-height: 1.45;
 }
 .simple-todo.warning {
-  background: var(--warn-d);
+  background: var(--warn-solid);
 }
 .simple-todo.danger {
-  background: var(--crit-d);
+  background: var(--crit-solid);
 }
 
 /* ========== 6 bis. CONSEILS DE LA SEMAINE ========== */
@@ -1080,7 +1160,7 @@ input:focus-visible {
   color: var(--g-d);
 }
 .btn-soft:hover:not(:disabled) {
-  background: #d8eddf;
+  background: var(--g-l2);
 }
 .week-days {
   display: grid;
@@ -1252,16 +1332,16 @@ input:focus-visible {
   height: 20px;
   border-radius: 50%;
   background: var(--g);
-  border: 3px solid #fff;
-  box-shadow: 0 1px 4px rgba(38, 53, 45, 0.35);
+  border: 3px solid var(--card);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 .sim input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
   background: var(--g);
-  border: 3px solid #fff;
-  box-shadow: 0 1px 4px rgba(38, 53, 45, 0.35);
+  border: 3px solid var(--card);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 .sim .chk {
   display: flex;
@@ -1316,8 +1396,8 @@ input:focus-visible {
 }
 .alert-card.info {
   --c: var(--sat);
-  --cl: #e9f0f5;
-  --cd: #2b5069;
+  --cl: var(--info-l);
+  --cd: var(--info-d);
 }
 .alert-header {
   display: flex;
@@ -1381,7 +1461,7 @@ input:focus-visible {
   height: 8px;
   margin-top: 16px;
   border-radius: 4px;
-  background: #edf1ee;
+  background: var(--track);
 }
 .gauge i {
   display: block;
@@ -1444,7 +1524,7 @@ input:focus-visible {
 
 .footer {
   padding: 24px 0 40px;
-  background: #fff;
+  background: var(--card);
   font-size: 13px;
   color: var(--mut);
 }

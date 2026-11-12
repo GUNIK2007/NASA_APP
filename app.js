@@ -31,6 +31,18 @@ const COULEURS = {
   texte: "#26352D",
 };
 
+// Les couleurs des graphiques suivent le thème (clair/sombre) : lues dans les variables CSS
+function synchroniserCouleurs() {
+  const s = getComputedStyle(document.documentElement);
+  const v = (nom, defaut) => s.getPropertyValue(nom).trim() || defaut;
+  COULEURS.capteur = v("--g", COULEURS.capteur);
+  COULEURS.satellite = v("--sat", COULEURS.satellite);
+  COULEURS.negatif = v("--crit", COULEURS.negatif);
+  COULEURS.grille = v("--line", COULEURS.grille);
+  COULEURS.zero = v("--mut", COULEURS.zero);
+  COULEURS.texte = v("--ink", COULEURS.texte);
+}
+
 // Dimensions des graphiques (unités du viewBox SVG)
 const GRAPHE = { largeur: 720, hauteur: 290, gauche: 48, droite: 16, haut: 30, bas: 30 };
 const ECART = { hauteur: 140, haut: 16, bas: 28, largeurBarre: 26 };
@@ -291,6 +303,7 @@ function activerSurvol(svg, cle) {
 }
 
 function afficherGraphiques() {
+  synchroniserCouleurs();
   // Construit les trois mesures, puis n'affiche que celle choisie par les radios m-hum/m-temp/m-rain.
   const cles = Object.keys(DONNEES);
   $("#charts").innerHTML = cles.map(blocGraphique).join("");
@@ -810,6 +823,38 @@ function activerNavigation() {
   });
 }
 
+/* --- Mode sombre --- */
+
+function appliquerTheme(theme, memoriser) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const sombre = theme === "dark";
+  const bouton = $("#theme-toggle");
+  bouton.setAttribute("aria-label", sombre ? "Passer en mode clair" : "Passer en mode sombre");
+  bouton.title = sombre ? "Mode clair" : "Mode sombre";
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = sombre ? "#0E1511" : "#16834A";
+  if (memoriser) {
+    try {
+      localStorage.setItem("reactplus-theme", theme);
+    } catch {}
+  }
+  afficherGraphiques(); // les graphiques SVG reprennent les couleurs du thème
+}
+
+function activerTheme() {
+  const courant = () => document.documentElement.getAttribute("data-theme") || "light";
+  $("#theme-toggle").addEventListener("click", () => appliquerTheme(courant() === "dark" ? "light" : "dark", true));
+  // Suit le thème du téléphone tant que l'utilisateur n'a rien choisi
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    let choisi = null;
+    try {
+      choisi = localStorage.getItem("reactplus-theme");
+    } catch {}
+    if (!choisi) appliquerTheme(e.matches ? "dark" : "light", false);
+  });
+  appliquerTheme(courant(), false);
+}
+
 function demarrer() {
   // Initialise les valeurs des commandes et relie leurs événements aux fonctions de mise à jour.
   // Les curseurs partent des dernières mesures du capteur
@@ -830,6 +875,7 @@ function demarrer() {
     year: "numeric",
   });
 
+  activerTheme();
   afficherTout();
   activerApparitions();
   activerNavigation();
