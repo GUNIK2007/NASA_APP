@@ -40,6 +40,7 @@
         <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" /></symbol>
         <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" /></symbol>
         <symbol id="i-flat" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
+        <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h4l5-4v13l-5-4H4z" /><path d="M16.5 9a4 4 0 0 1 0 6M18.8 6.5a7.5 7.5 0 0 1 0 11" /></symbol>
         <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /><path d="M8 9.5h8M8 12.5h5" /></symbol>
         <symbol id="i-send" viewBox="0 0 24 24"><path d="M5 12l15-8-5 17-3-7z" /><path d="M12 14l8-10" /></symbol>
         <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
@@ -56,11 +57,16 @@
           <span class="brand-logo" aria-hidden="true"><svg class="ic"><use href="#i-sprout" /></svg></span>
           <span class="brand-name">Réact<b>+</b></span>
         </a>
+        <div class="partner" title="Données ouvertes NASA. Réact+ n’est pas affilié officiellement à la NASA.">
+          <img src="images-removebg-preview.png" alt="Logo de la NASA" height="30" onerror="this.hidden=true;this.nextElementSibling.hidden=false" /><span class="partner-fb" hidden>NASA</span>
+          <span class="partner-txt">Données ouvertes</span>
+        </div>
         <nav class="nav" aria-label="Navigation principale">
           <a href="#tableau-de-bord" class="on">Tableau de bord</a>
           <a href="#parcelles">Mes parcelles</a>
           <a href="#satellite">Données satellitaires</a>
           <a href="#analyses">Analyses</a>
+          <a href="#semaine">Conseils</a>
           <a href="#recommandations">Recommandations</a>
         </nav>
         <div class="topbar-end">
@@ -75,12 +81,24 @@
     <main id="contenu" class="wrap">
       <!-- Accueil du tableau de bord -->
       <section class="hero reveal" id="tableau-de-bord">
-        <div>
-          <h1>Tableau de bord agricole</h1>
-          <p class="lead">
-            Surveillez vos cultures et prenez de meilleures décisions grâce aux données satellitaires et aux capteurs
-            intelligents.
-          </p>
+        <div class="hero-top">
+          <div class="hero-text">
+            <h1>Tableau de bord agricole</h1>
+            <p class="lead">
+              Surveillez vos cultures et prenez de meilleures décisions grâce aux données satellitaires et aux capteurs
+              intelligents.
+            </p>
+          </div>
+
+          <!-- Image d'accueil : déposer une vraie photo dans images/accueil.jpg (16/9, ~1600 px). Sans photo, l'en-tête reste texte seul. -->
+          <figure class="hero-visual" hidden>
+            <img
+              src="images/accueil.jpg"
+              alt="Parcelle agricole au Togo"
+              onload="this.parentNode.hidden=false;this.closest('.hero-top').classList.add('has-visual')"
+              onerror="this.parentNode.remove()"
+            />
+          </figure>
         </div>
         <ul class="chips" aria-label="Informations de contexte">
           <li><svg class="ic"><use href="#i-calendar" /></svg><span id="today">—</span></li>
@@ -94,6 +112,21 @@
       <!-- Cartes statistiques : app.js remplit #reads (4 cartes) -->
       <section aria-label="Dernières mesures">
         <div class="stats-grid reveal" id="reads"></div>
+      </section>
+
+      <!-- En mots simples : dernière mesure du jour expliquée en français facile (app.js, afficherSimple) -->
+      <section class="card reveal" id="simple" aria-labelledby="simple-title">
+        <div class="card-head wrapable">
+          <div>
+            <h2 class="card-title" id="simple-title">Aujourd’hui, en mots simples</h2>
+            <p class="note" id="simple-sub"></p>
+          </div>
+          <button id="simple-listen" class="btn btn-soft" type="button" hidden>
+            <svg class="ic"><use href="#i-sound" /></svg><span>Écouter</span>
+          </button>
+        </div>
+        <ul class="simple-list" id="simple-list"></ul>
+        <div class="simple-todo" id="simple-todo"></div>
       </section>
 
       <!-- Parcelle + sources de données -->
@@ -201,6 +234,23 @@
           ><label for="m-rain">Pluie</label>
         </div>
         <div class="charts" id="charts"></div>
+      </section>
+
+      <!-- Conseils de la semaine : app.js (afficherSemaine) les calcule à partir des 7 derniers jours -->
+      <section class="card reveal" id="semaine" aria-labelledby="week-title">
+        <div class="card-head wrapable">
+          <div>
+            <h2 class="card-title" id="week-title">Conseils de la semaine</h2>
+            <p class="note" id="week-sub"></p>
+          </div>
+          <button id="week-ask" class="btn btn-soft" type="button">
+            <svg class="ic"><use href="#i-chat" /></svg>Poser une question à l’assistant
+          </button>
+        </div>
+        <div class="week-days" id="week-days" role="list" aria-label="Les 7 derniers jours"></div>
+        <dl class="week-kpis" id="week-kpis"></dl>
+        <div class="week-advice" id="week-advice"></div>
+        <p class="note week-foot">Conseils calculés par des règles explicables à partir des mesures quotidiennes, avec les mêmes seuils que le simulateur.</p>
       </section>
 
       <!-- Recommandations + simulateur -->
